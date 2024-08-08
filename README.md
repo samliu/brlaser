@@ -1,6 +1,60 @@
 brlaser: Brother laser printer driver
 =====================================
 
+# Sam's Copy-pasted Installation Guide
+
+## Build & Install
+
+### Prerequisites
+
+You will need a C compiler (clang) and `cmake`. I installed `cmake` using homebrew
+
+```bash
+$ brew install cmake
+```
+
+Clone or download the latest `brlaser` source code.
+
+```bash
+$ curl -LO https://github.com/pdewacht/brlaser/archive/refs/tags/v6.tar.gz
+$ tar xvzf v6.tar.gz
+```
+
+### Compile
+
+```bash
+$ cd brlaser-6
+$ cmake .
+$ make
+$ ppdc brlaser.drv -d ppd
+```
+
+Fun fact: `ppdc` is deprecated according to its [man page](https://www.cups.org/doc/man-ppdc.html)
+
+### Install (`make install` doesn't work. Do this instead)
+
+Install `rastertobrlaser`
+
+```bash
+$ sudo mv rastertobrlaser /usr/libexec/cups/filter/rastertobrlaser
+$ sudo chown root:wheel /usr/libexec/cups/filter/rastertobrlaser
+```
+
+Install PPD files
+
+```bash
+$ sudo mv ppd/*.ppd /Library/Printers/PPDs/Contents/Resources/
+$ sudo shown root:wheel /Library/Printers/PPDs/Contents/Resources/*.ppd
+```
+
+### Printer setup
+
+Plug in the printer and select the `brlaser6` driver.
+
+You may now celebrate by doing a dance, or putting away your baseball bats.
+
+# Original Readme
+
 brlaser is an open-source CUPS driver designed specifically for Brother monochrome laser printers and multi-function devices.
 
 While most Brother printers can use standard printer languages like PCL or PostScript, some models do not. If you have a monochrome Brother laser printer (or multi-function device) and the other open-source drivers are not working, brlaser might be able to help. Additionally, there have been reports of some non-Brother printers working with this driver.
